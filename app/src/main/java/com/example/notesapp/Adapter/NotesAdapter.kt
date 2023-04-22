@@ -5,7 +5,6 @@ import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.cardview.widget.CardView
@@ -17,7 +16,7 @@ import kotlin.random.Random
 class NotesAdapter(private val context : Context, val listener: NotesClickListener) :
     RecyclerView.Adapter<NotesAdapter.NoteViewHolder>() {
 
-    private val NotesList = ArrayList<Note>()
+    private val notesList = ArrayList<Note>()
     private val fullList = ArrayList<Note>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
@@ -31,7 +30,7 @@ class NotesAdapter(private val context : Context, val listener: NotesClickListen
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
 
-        val currentNote = NotesList[position]
+        val currentNote = notesList[position]
         holder.title.text = currentNote.title
         holder.title.isSelected = true
         holder.note_tv.text = currentNote.note
@@ -42,19 +41,19 @@ class NotesAdapter(private val context : Context, val listener: NotesClickListen
 
         holder.notes_layout.setOnClickListener {
 
-            listener.onItemClicked(NotesList[holder.adapterPosition])
+            listener.onItemClicked(notesList[holder.adapterPosition])
 
         }
 
         holder.notes_layout.setOnLongClickListener {
-            listener.onLongItemClicked(NotesList[holder.adapterPosition], holder.notes_layout)
+            listener.onLongItemClicked(notesList[holder.adapterPosition], holder.notes_layout)
             true
         }
 
     }
 
     override fun getItemCount(): Int {
-        return NotesList.size
+        return notesList.size
     }
 
     fun updateList(newList : List<Note>) {
@@ -62,18 +61,18 @@ class NotesAdapter(private val context : Context, val listener: NotesClickListen
         fullList.clear()
         fullList.addAll(newList)
 
-        NotesList.clear()
-        NotesList.addAll(fullList)
+        notesList.clear()
+        notesList.addAll(fullList)
         notifyDataSetChanged()
 
     }
 
     fun filterList(search : String) {
-        NotesList.clear()
+        notesList.clear()
         for (item in fullList) {
             if (item.title?.lowercase()?.contains(search.lowercase()) == true ||
                     item.note?.lowercase()?.contains(search.lowercase()) == true) {
-                NotesList.add(item)
+                notesList.add(item)
             }
         }
 
